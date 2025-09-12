@@ -16,4 +16,4 @@ docker run --name vulnacledb \
 -e INIT_PROCESSES=100 \
 -v ./oradata:/opt/oracle/oradata \
 -v ./setup:/opt/oracle/scripts/setup \
- vulnacledb
+ vulnacle
