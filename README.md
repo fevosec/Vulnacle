@@ -43,7 +43,7 @@ The passwords for each user is the same as the username (vuln01/vuln01 for examp
 docker start -i vulnacledb
 ```
 
-if there's any errors or issues, remove the docker and recreate it. The database is persistant and this will run quickly. Run these commands inside the Vulnacle directory
+if there's any errors or issues, remove the docker and recreate it. The database is persistent and this will run quickly. Run these commands inside the Vulnacle directory
 
 ```
 docker rm vulnacledb
