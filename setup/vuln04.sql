@@ -1,4 +1,4 @@
-lter session set container=XEPDB1;
+alter session set container=XEPDB1;
 create user vuln04 identified by vuln04;
 grant connect, resource to vuln04;
 

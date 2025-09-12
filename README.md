@@ -53,5 +53,5 @@ docker run --name vulnacledb -p 1521:1521 --ulimit nofile=1024:65536 --ulimit np
 
 # Playing with vulnerabilities
 
-Currently, there are 4 vulnerabilities each in it's own user. The users are VULN01, VULN02, VULN03 and VULN04. Although it is possible to use odat to exploit all of these vulnerabilities, it is highly recommended to perform all of it manually as you might not have access to odat or access to the oracle listener (port 1521 or whichever port it is running on).
+Currently, there are 5 vulnerabilities each in it's own user. The users are VULN01, VULN02, VULN03, VULN04 and VULN05. Although it is possible to use odat to exploit all of these vulnerabilities, it is highly recommended to perform all of it manually as you might not have access to odat or access to the oracle listener (port 1521 or whichever port it is running on).
 
