@@ -19,3 +19,20 @@ Use it to demonstrate how common configuration mistakes can be discovered and fi
 - Use only for lawful, authorized testing. Do not use Vulnacle to facilitate unauthorized access or attacks. You are responsible for complying with local laws and organizational policies.
 
 - No offensive tooling included. Vulnacle documents weaknesses and remediation; it does not include exploit code or step-by-step attack recipes.
+
+# To build docker
+
+```
+git clone https://github.com/fevosec/Vulnacle.git
+cd Vulnacle
+./build.sh
+```
+
+# Connect to the docker to exploit the database
+
+```
+docker exec -it vulnacledb bash
+sqlplus vuln01@127.0.0.1:1521/XEPDB1
+```
+
+The passwords for each user is the same as the username (vuln01/vuln01 for example)
