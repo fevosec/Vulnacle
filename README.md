@@ -36,3 +36,22 @@ sqlplus vuln01@127.0.0.1:1521/XEPDB1
 ```
 
 The passwords for each user is the same as the username (vuln01/vuln01 for example)
+
+# To restart the docker simply run
+
+```
+docker start -i vulnacledb
+```
+
+if there's any errors or issues, remove the docker and recreate it. The database is persistant and this will run quickly. Run these commands inside the Vulnacle directory
+
+```
+docker rm vulnacledb
+docker run --name vulnacledb -p 1521:1521 --ulimit nofile=1024:65536 --ulimit nproc=2047:16384 --ulimit stack=10485760:33554432 --ulimit memlock=3221225472 -e ORACLE_PWD=FunStuff1 -e INIT_SGA_SIZE=2048 -e INIT_PGA_SIZE=500 -e INIT_CPU_COUNT=1 -e INIT_PROCESSES=100 -v ./oradata:/opt/oracle/oradata -v ./setup:/opt/oracle/scripts/setup  vulnacle
+
+```
+
+# Playing with vulnerabilities
+
+Currently, there are 4 vulnerabilities each in it's own user. The users are VULN01, VULN02, VULN03 and VULN04. Although it is possible to use odat to exploit all of these vulnerabilities, it is highly recommended to perform all of it manually as you might not have access to odat or access to the oracle listener (port 1521 or whichever port it is running on).
+
