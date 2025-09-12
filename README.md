@@ -6,6 +6,10 @@ Use it to demonstrate how common configuration mistakes can be discovered and fi
 
 ⚠️ IMPORTANT: Vulnacle is for education, training, and research only. Do not run it on public networks or use it to attack systems you do not own or have explicit permission to test. See Legal & Safety below.
 
+# Before you begin
+- To download and run Oracle Database, regardless whether inside or outside a container, you must download the binaries from the Oracle website and accept the license indicated at that page.
+
+
 # Legal, licensing & safety — read carefully
 
 - Do not redistribute vendor binaries unless the vendor license explicitly allows it. This project uses a build-locally approach to avoid redistributing proprietary code.
