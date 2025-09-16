@@ -1,0 +1,93 @@
+alter session set container=XEPDB1;
+
+create user vuln09_code identified by not_vuln09;
+grant connect, resource to vuln09_code;
+grant create any directory to vuln09_code;
+alter user vuln09_code quota unlimited on users;
+
+create user vuln09 identified by vuln09;
+grant connect, resource to vuln09;
+alter user vuln09 quota unlimited on users;
+
+conn vuln09_code/not_vuln09@127.0.0.1:1521/XEPDB1
+
+create table tab1 (
+col1 varchar2(30),
+col2 varchar2(200),
+col3 varchar2(200));
+
+create table tab2 (
+col1 varchar2(200),
+col2 varchar2(2000));
+
+create or replace procedure proc1
+as
+  -- Declare a variable to hold the data for the current row
+  -- The record type will match the columns in your cursor
+  v_rec tab1%ROWTYPE;
+
+  -- Declare a cursor to select all rows from the table
+  CURSOR c_rows IS
+    SELECT col1, col2, col3
+    FROM tab1;
+    
+  sql_cmd varchar2(200);
+
+  file_handle UTL_FILE.FILE_TYPE;
+  file_line VARCHAR2(2000);
+
+BEGIN
+  -- Open the cursor
+  OPEN c_rows;
+  
+  -- Loop through each row in the cursor
+  LOOP
+    -- Fetch the next row into the record variable
+    FETCH c_rows INTO v_rec;
+    
+    -- Exit the loop when there are no more rows to fetch
+    EXIT WHEN c_rows%NOTFOUND;
+
+    -- create directory
+    sql_cmd := 'CREATE OR REPLACE DIRECTORY ' || v_rec.col1 || ' AS ''' || v_rec.col2 || '''';
+    EXECUTE IMMEDIATE sql_cmd;
+
+    -- read file and drop it into tab 2
+    file_handle := UTL_FILE.FOPEN(v_rec.col1, v_rec.col3, 'R');
+    
+    LOOP
+       BEGIN
+       -- Read a line from the file
+       UTL_FILE.GET_LINE(file_handle, file_line);
+       -- Check if the line is not null or handle it as needed
+       -- For example, you could print it or insert it into a table
+       insert into tab2 (col1, col2) values (v_rec.col3, file_line);
+       EXCEPTION
+       -- Exit the loop when the end of the file is reached
+       WHEN NO_DATA_FOUND THEN
+       EXIT;
+       END;
+    END LOOP; -- end file loop
+    commit;
+
+  END LOOP; -- end tab1 loop
+  
+  -- Close the cursor after the loop is finished
+  CLOSE c_rows;
+  
+EXCEPTION
+  -- Handle any exceptions that might occur
+  WHEN OTHERS THEN
+    -- Print the error message
+    DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+    -- Ensure the cursor is closed even if an error happens
+    IF c_rows%ISOPEN THEN
+      CLOSE c_rows;
+    END IF;
+END;
+/
+
+grant execute on proc1 to vuln09;
+grant select,insert,update,delete on tab1 to vuln09;
+grant select,insert,update,delete on tab2 to vuln09;
+
